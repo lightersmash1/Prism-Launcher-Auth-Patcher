@@ -4,6 +4,8 @@
 
 THIS MAY OR MAY NOT WORK ON OLDER VERSIONS AS WELL. IF YOU ARE ON AN OLDER VERSION (pre 10.0.0), USE https://github.com/antunnitraj/Prism-Launcher-PolyMC-Offline-Bypass
 
+IT ISN'T CONFIRMED IF THIS WORKS ON MAC!
+
 AOBs involved (for those who are well off on their own or those with hex editing capabilities that extend past HxD in #3):
 
 **49 63 85 c8 ?? ?? ?? -> b8 03 00 00 00 90 90**
