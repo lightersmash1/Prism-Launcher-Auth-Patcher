@@ -16,7 +16,8 @@ AOBs involved (for those who are well off on their own or those with hex editing
 
 Open powershell directly or open command prompt then type "powershell". 
 
-```function Compile-Find($s){
+```powershell
+function Compile-Find($s){
     $s.Split(' ') | ForEach-Object {
         if($_ -eq '??'){ -1 } else { [Convert]::ToInt32($_,16) }
     }
@@ -62,7 +63,8 @@ Patch $data (Compile-Find "41 83 7c 24 60 00 7e 10")  (Compile-Repl "e9 fa 00 00
 Make a python file or enter into command prompt after typing "py". 
 For linux/mac users or users who have it installed somewhere else, replace the file path in the script with the path that you have it installed.
 
-```import os, sys
+```python
+import os, sys
 
 def patch_binary(fn, find, repl):
     d = bytearray(open(fn, "rb").read())
@@ -134,13 +136,13 @@ After disassembling the exe's raw assembly, I was able to find the CPU instructi
 
 For those of us who don't understand, _mov_ means move (basically its storing something in RAX), RAX in this case is just where the checked accountState is being stored for the `switch (...)` statement. We want to make it think that the account state is _Online_, rather than _Errored_ or _Unchecked_. 
 
-So, we replace that _movxsd_ with a new instruction: `mov RAX, 3`. This will make the function believe that every time the account state is _Online_. However, that new instruction is bigger in actual size than the original instruction. So, instead, we'll use `mov EAX, 3`. EAX is the first 4 bytes of the 8 byte register RAX, so it works this way.
+So, we replace that _movxsd_ with a new instruction: `mov RAX, 3` (see, this is why that AccountState was important.) This will make the function believe that every time the account state is _Online_. However, that new instruction is bigger in actual size than the original instruction. So, instead, we'll use `mov EAX, 3`. EAX is the first 4 bytes of the 8 byte register RAX, so it works this way.
 
 I found the shortest patterns with Cheat Engine that will show to the address of that instruction, and this is the first patch.
 
 49 63 85 c8 ?? ?? ?? -> b8 03 00 00 00 90 90
 
-This patch is all you would need to make Prism Launcher work again IF you still use this project's accounts.json modifier.
+**This patch is all you would need to make Prism Launcher work again IF you still use this project's accounts.json modifier.**
 
 The next two patches are ones that would invalidate the need for a modified accounts.json. I'll keep these short and sweet, assuming others will come forward that know how to reverse engineer will make new patches if needed.
 
