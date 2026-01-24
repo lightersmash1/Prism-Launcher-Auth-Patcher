@@ -5,7 +5,9 @@
 AOBs involved (for those who are well off on their own):
 
 **49 63 85 c8 ?? ?? ?? -> b8 03 00 00 00 90 90**
+
 **74 33 41 83 7d 20 -> eb 21 ?? ?? ?? ??**
+
 **41 83 7c 24 60 00 7e 10 -> E9 FA 00 00 00 ?? ??**
 
 **Use #1 for windows, #2 for windows/linux/mac, #3 for users on windows and linux/mac with a hex editor, #4 for windows/mac as a last resort**
