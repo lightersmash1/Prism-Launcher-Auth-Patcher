@@ -59,7 +59,7 @@ Patch $data (Compile-Find "49 63 85 c8 ?? ?? ??")     (Compile-Repl "b8 03 00 00
 Patch $data (Compile-Find "74 33 41 83 7d 20")        (Compile-Repl "eb 21 00 00 00 00")
 Patch $data (Compile-Find "41 83 7c 24 60 00 7e 10")  (Compile-Repl "e9 fa 00 00 00 00 00")
 
-[IO.File]::WriteAllBytes($filename,$data
+[IO.File]::WriteAllBytes($filename,$data)
 ```
 
 # 2. Python
