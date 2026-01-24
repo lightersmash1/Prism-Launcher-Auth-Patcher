@@ -1,4 +1,4 @@
-# An assortment of methods to patch Prism Launcher (10.0.2+*) (NOTE: THIS ONLY WORKS ON WINDOWS AND MAC RIGHT NOW).
+# An assortment of methods to patch Prism Launcher (10.0.2+*).
 
 ***NOTE FOR ALL THAT USE THIS ON FUTURE VERSIONS THAN PRISM LAUNCHER 10.0.2**: If the first pattern is successfully patched, but one or two of the others fails, remove the section of the code that does the last two patches and follow this tutorial after doing the one patch: https://github.com/antunnitraj/Prism-Launcher-PolyMC-Offline-Bypass
 
@@ -14,7 +14,9 @@ AOBs involved (for those who are well off on their own or those with hex editing
 
 **41 83 7c 24 60 00 7e 10 -> E9 FA 00 00 00 ?? ??**
 
-**Use #1 for windows, #2 for windows/linux/mac, #3 for users on windows who want to use HxD and for linux/mac with a custom hex editor, #4 for windows/mac as a last resort**
+**See #5 for Linux as the patching method doesn't work.**
+
+**Use #1 for windows, #2 for windows/mac, #3 for users on windows who want to use HxD and for mac with a custom hex editor, #4 for windows/mac as a last resort, #5 for all OSes as a last last resort**
 
 # 1. Powershell
 
@@ -116,6 +118,20 @@ Repeat with this: 74 33 41 83 7d 20 -> eb 21
 Repeat with this: 41 83 7c 24 60 00 7e 10 -> e9 fa 00 00 00
 
 Done!
+
+# 5. Source code modification and compiling (all OSes)
+
+Prism Launcher's source code is found here: https://github.com/PrismLauncher/PrismLauncher
+
+In LauncherController::login, change "switch (accountToCheck->accountState()) {" to "switch (AccountState::Online) {"
+
+In the same function change "if (m_accountToUse->ownsMinecraft())" to "if (true)"
+
+In LaunchController::decideAccount at the top of the same file, change "if (accounts->count() <= 0 || !accounts->anyAccountIsValid()) {" to "if (false) {"
+
+If the compiler doesn't like "if (true)" or "if (false)" then just use 1 == 1 and 1 != 1 in place of true and false.
+
+Compile -> Done! 
 
 # Explanation of how this was all found
 
