@@ -1,4 +1,4 @@
-# An assortment of methods to patch Prism Launcher (10.0.2+*).
+# An assortment of methods to patch Prism Launcher (10.0.2+*) (NOTE: THIS ONLY WORKS ON WINDOWS RIGHT NOW).
 
 ***NOTE FOR ALL THAT USE THIS ON FUTURE VERSIONS THAN PRISM LAUNCHER 10.0.2**: If the first pattern is successfully patched, but one or two of the others fails, remove the section of the code that does the last two patches and follow this tutorial after doing the one patch: https://github.com/antunnitraj/Prism-Launcher-PolyMC-Offline-Bypass
 
