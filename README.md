@@ -2,7 +2,7 @@
 
 ***NOTE FOR ALL THAT USE THIS ON FUTURE VERSIONS THAN PRISM LAUNCHER 10.0.2**: If the first pattern is successfully patched, but one or two of the others fails, remove the section of the code that does the last two patches and follow this tutorial after doing the one patch: https://github.com/antunnitraj/Prism-Launcher-PolyMC-Offline-Bypass
 
-AOBs involved (for those who are well off on their own):
+AOBs involved (for those who are well off on their own or those with hex editing capabilities that extend past HxD in #3):
 
 **49 63 85 c8 ?? ?? ?? -> b8 03 00 00 00 90 90**
 
@@ -10,7 +10,7 @@ AOBs involved (for those who are well off on their own):
 
 **41 83 7c 24 60 00 7e 10 -> E9 FA 00 00 00 ?? ??**
 
-**Use #1 for windows, #2 for windows/linux/mac, #3 for users on windows and linux/mac with a hex editor, #4 for windows/mac as a last resort**
+**Use #1 for windows, #2 for windows/linux/mac, #3 for users on windows who want to use HxD and for linux/mac with a custom hex editor, #4 for windows/mac as a last resort**
 
 # 1. Powershell
 
