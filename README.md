@@ -2,6 +2,8 @@
 
 ***NOTE FOR ALL THAT USE THIS ON FUTURE VERSIONS THAN PRISM LAUNCHER 10.0.2**: If the first pattern is successfully patched, but one or two of the others fails, remove the section of the code that does the last two patches and follow this tutorial after doing the one patch: https://github.com/antunnitraj/Prism-Launcher-PolyMC-Offline-Bypass
 
+THIS MAY OR MAY NOT WORK ON OLDER VERSIONS AS WELL. IF YOU ARE ON AN OLDER VERSION (pre 10.0.0), USE https://github.com/antunnitraj/Prism-Launcher-PolyMC-Offline-Bypass
+
 AOBs involved (for those who are well off on their own or those with hex editing capabilities that extend past HxD in #3):
 
 **49 63 85 c8 ?? ?? ?? -> b8 03 00 00 00 90 90**
