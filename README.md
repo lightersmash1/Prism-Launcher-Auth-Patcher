@@ -115,8 +115,6 @@ Done!
 
 # Explanation of how this was all found
 
-First, let me explain why the issue is now happening and how I fixed it (as that will allow new fixes to be created for future versions eh?)
-
 In the LauncherController.cpp file in the source code, there's two new sections (in LaunchController::login):
 
 ` if ((m_accountToUse->accountType() != AccountType::Offline ...) {
@@ -124,7 +122,7 @@ In the LauncherController.cpp file in the source code, there's two new sections 
         m_accountToUse->refresh();
     }`
 
-This section will give an _account state_ to the Microsoft account being used (which is what m_accountToUse and accountToCheck are.) In the current form of how this bypass works, it would probably make the account state be set to _Errored_.
+This section will give an _account state_ to the Microsoft account being used (which is what m_accountToUse and accountToCheck are.) In the original bypass, it would probably make the account state be set to _Errored_.
 
 `switch (accountToCheck->accountState()) {`
 
