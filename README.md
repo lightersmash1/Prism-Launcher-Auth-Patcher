@@ -110,3 +110,64 @@ Repeat with this: 74 33 41 83 7d 20 -> eb 21
 Repeat with this: 41 83 7c 24 60 00 7e 10 -> e9 fa 00 00 00
 
 Done!
+
+# Explanation of how this was all found
+
+First, let me explain why the issue is now happening and how I fixed it (as that will allow new fixes to be created for future versions eh?)
+
+In the LauncherController.cpp file in the source code, there's two new sections (in LaunchController::login):
+
+` if ((m_accountToUse->accountType() != AccountType::Offline ...) {
+        ...
+        m_accountToUse->refresh();
+    }`
+
+This section will give an _account state_ to the Microsoft account being used (which is what m_accountToUse and accountToCheck are.) In the current form of how this bypass works, it would probably make the account state be set to _Errored_.
+
+`switch (accountToCheck->accountState()) {`
+
+This section actually checks the state for being the correct one. The state that gives you the pass is AccountState::_Online_ (represented by the number 3 by the compiler, and yes, this will be important.)
+
+After disassembling the exe's raw assembly, I was able to find the CPU instruction for that exact switch on Windows 11, shown below. If you want know how to find the function, and a decompiled version of it into psuedocode, get **Ghidra** for free or pay $5000 for **IDA** (or use Cheat Engine), then find the function referencing the string "Launch cancelled - account does not own Minecraft.", which is inside of that LauncherController::login function.
+
+<img width="533" height="97" alt="Image" src="https://github.com/user-attachments/assets/c43ff44a-39bc-4ead-9f2c-c458fbd1c066" />
+
+For those of us who don't understand, _mov_ means move (basically its storing something in RAX), RAX in this case is just where the checked accountState is being stored for the `switch (...)` statement. We want to make it think that the account state is _Online_, rather than _Errored_ or _Unchecked_. 
+
+So, we replace that _movxsd_ with a new instruction: `mov RAX, 3`. This will make the function believe that every time the account state is _Online_. However, that new instruction is bigger in actual size than the original instruction. So, instead, we'll use `mov EAX, 3`. EAX is the first 4 bytes of the 8 byte register RAX, so it works this way.
+
+I found the shortest patterns with Cheat Engine that will show to the address of that instruction, and this is the first patch.
+
+49 63 85 c8 ?? ?? ?? -> b8 03 00 00 00 90 90
+
+This patch is all you would need to make Prism Launcher work again IF you still use this project's accounts.json modifier.
+
+The next two patches are ones that would invalidate the need for a modified accounts.json. I'll keep these short and sweet, assuming others will come forward that know how to reverse engineer will make new patches if needed.
+
+In LaunchController::login,
+
+`if (m_accountToUse->ownsMinecraft())
+     accountToCheck = m_accountToUse;
+else ...
+`
+
+This next patch will make sure that "ownsMinecraft" acts as if it's true in this if statement. 
+
+<img width="499" height="329" alt="Image" src="https://github.com/user-attachments/assets/1c70a3e1-859b-45ce-81d6-ffd0ee08ec91" />
+
+The last JZ is run if ownsMinecraft returns true, so I replaced the first JZ with a JMP to the address at where the last JZ went. With the patch here:
+
+74 33 41 83 7d 20 -> eb 21 ** ** ** **
+
+The above patch still doesn't fix everything. At the start of LaunchController::login, it runs LaunchController::decideAccount(), and the checker for a valid Minecraft account is at the top of it here (note, in the disassembly, ::decideAccount is also run at the start of ::login)
+
+`if (accounts->count() <= 0 || !accounts->anyAccountIsValid()) {`
+
+The part that functions as this if statement is below:
+
+<img width="431" height="64" alt="Image" src="https://github.com/user-attachments/assets/69bd6f11-3863-4527-9dff-929e09d13c98" />
+
+It can be replaced with a JMP to the place that the JLE will go, as that JLE goes to the next part of the function after the if statement. With the patch here:
+
+41 83 7c 24 60 00 7e 10 -> E9 FA 00 00 00 ** **
+
